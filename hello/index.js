@@ -1,31 +1,17 @@
 const http= require("http");
 const fs=require("fs");
 const url=require("url");
+const express=require("express"); 
 
-const myserver= http.createServer((req,res)=>{
-    if (req.url==="/favicon.ico") return res.end();
-    const log=`${Date.now()} : ${req.url} A new user has looged in\n`;
-    const myurl=url.parse(req.url,true);
-    console.log(myurl);
+const app=express();
 
-    fs.appendFile("./userLogs.txt",log,(err)=>{
-        console.log("A log has Been added");
-    });
-    switch(myurl.pathname) {
-        case "/":{
-            res.end("This is the HomePage");
-            break;  
-        } 
-        case "/About":{
-            res.end("This Server Belongs to Jatin Singh");
-            break;
-        } 
-        case "/Contact":{
-            res.end("Contact me at : singh.jatin609@gmail.com");
-            break;
-        } 
-    }
-});
+app.get("/",(req,res)=>{
+    return res.send("This is the home Page " + "Welcome " + req.query.name);
+})
+app.get("/About",(req,res)=>{
+    return res.send("This is the About Page");
+})
 
-
-myserver.listen(8000,()=> console.log("Server Started"));
+app.listen(8000,()=>{
+    console.log("Server has Started");
+})
